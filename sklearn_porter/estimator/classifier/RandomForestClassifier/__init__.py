@@ -356,7 +356,7 @@ class RandomForestClassifier(Classifier):
         :return : string
             The built class as string.
         """
-        temp_class = self.temp('embedded.class')
+        temp_class = self.temp(self.template_prefix + 'embedded.class')
         return temp_class.format(class_name=self.class_name,
                                  method_name=self.method_name,
                                  method=method, n_features=self.n_features)
