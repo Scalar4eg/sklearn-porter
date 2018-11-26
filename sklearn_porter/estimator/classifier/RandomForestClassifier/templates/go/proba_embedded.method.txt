@@ -1,0 +1,19 @@
+{methods}
+func {method_name} (features []float64) [{n_classes}]float64 {{
+	var classes [{n_estimators}][{n_classes}]float64
+	var result  [{n_classes}]float64
+	n_classes := {n_classes}
+	n_estimators := {n_estimators}
+
+	{method_calls}
+
+
+    for j := 0; j < n_classes; j++ {{
+        result[j] = 0.0
+	    for i := 0; i < n_estimators; i++ {{
+           result[j] += classes[i][j]
+        }}
+        result[j] /= float64(n_estimators)
+	}}
+	return result
+}}

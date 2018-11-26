@@ -1,0 +1,15 @@
+func {method_name}_{method_id}(features []float64) [{n_classes}]float64 {{
+	var classes [{n_classes}]int
+	var predictions [{n_classes}]float64
+	{tree_branches}
+
+    var sum float64
+	for i := 0; i < {n_classes}; i++ {{
+		sum += float64(classes[i])
+		predictions[i] = float64(classes[i])
+	}}
+	for i := 0; i < {n_classes}; i++ {{
+        predictions[i] /= sum
+    }}
+	return predictions
+}}
