@@ -17,7 +17,7 @@ class RandomForestClassifier(Classifier):
     sklearn.ensemble.RandomForestClassifier.html
     """
 
-    SUPPORTED_METHODS = ['predict']
+    SUPPORTED_METHODS = ['predict', 'predict_proba']
     SUPPORTED_LANGUAGES = ['c', 'go', 'java', 'js', 'php', 'ruby']
 
     # @formatter:off
@@ -91,6 +91,11 @@ class RandomForestClassifier(Classifier):
             estimator, target_language=target_language,
             target_method=target_method, **kwargs)
 
+        if target_method == 'predict_proba':
+            self.template_prefix = 'proba_'
+        else:
+            self.template_prefix = ''
+
         # Check type of base estimators:
         if not isinstance(estimator.base_estimator, DecisionTreeClassifier):
             msg = "The classifier doesn't support the given base estimator %s."
@@ -139,7 +144,7 @@ class RandomForestClassifier(Classifier):
         self.n_features = est.estimators_[0].n_features_
         self.n_classes = est.n_classes_
 
-        if self.target_method == 'predict':
+        if self.target_method == 'predict' or self.target_method == 'predict_proba':
             # Exported:
             if export_data and os.path.isdir(export_dir):
                 self.export_data(export_dir, export_filename,
@@ -147,6 +152,22 @@ class RandomForestClassifier(Classifier):
                 return self.predict('exported')
             # Embedded:
             return self.predict('embedded')
+
+    def predict_proba(self, temp_type):
+        """
+        Transpile the predict_proba method.
+
+        Parameters
+        ----------
+        :param temp_type : string
+            The kind of export type (embedded, separated, exported).
+
+        Returns
+        -------
+        :return : string
+            The transpiled predict method as string.
+        """
+        return self.predict(temp_type)
 
     def predict(self, temp_type):
         """
@@ -281,7 +302,7 @@ class RandomForestClassifier(Classifier):
             estimator.tree_.children_left, estimator.tree_.children_right,
             estimator.tree_.threshold, estimator.tree_.value, indices, 0, 1)
 
-        temp_single_method = self.temp('embedded.single_method')
+        temp_single_method = self.temp(self.template_prefix + 'embedded.single_method')
         return temp_single_method.format(method_name=self.method_name,
                                          method_id=str(estimator_index),
                                          n_classes=self.n_classes,
@@ -298,12 +319,12 @@ class RandomForestClassifier(Classifier):
         """
         # Generate method or function names:
         fn_names = []
-        temp_method_calls = self.temp('embedded.method_calls',
+        temp_method_calls = self.temp(self.template_prefix + 'embedded.method_calls',
                                       n_indents=2, skipping=True)
         for idx, estimator in enumerate(self.estimators):
             fn_name = self.method_name + '_' + str(idx)
             fn_name = temp_method_calls.format(class_name=self.class_name,
-                                               method_name=fn_name)
+                                               method_name=fn_name, idx=idx)
             fn_names.append(fn_name)
         fn_names = '\n'.join(fn_names)
         fn_names = self.indent(fn_names, n_indents=1, skipping=True)
@@ -318,7 +339,7 @@ class RandomForestClassifier(Classifier):
         # Merge generated content:
         n_indents = 1 if self.target_language in ['java', 'js',
                                                   'php', 'ruby'] else 0
-        temp_method = self.temp('embedded.method')
+        temp_method = self.temp(self.template_prefix + 'embedded.method')
         out = temp_method.format(class_name=self.class_name,
                                  method_name=self.method_name,
                                  method_calls=fn_names, methods=fns,
