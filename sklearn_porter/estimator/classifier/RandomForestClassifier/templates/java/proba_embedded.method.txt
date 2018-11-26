@@ -1,0 +1,18 @@
+{methods}
+public static float[] {method_name}(double[] features) {{
+    int n_classes = {n_classes};
+    int n_estimators = {n_estimators};
+    float[][] classes = new float[n_estimators][n_classes];
+    float[] result = new float[n_classes];
+    {method_calls}
+
+    int i, j;
+    for (j = 0; j < n_classes; j++) {{
+        result[j] = 0.0f;
+        for (i = 0; i < n_estimators; i++) {{
+           result[j] += classes[i][j];
+        }}
+        result[j] /= (float)n_estimators;
+    }}
+    return result;
+}}

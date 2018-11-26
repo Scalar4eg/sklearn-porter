@@ -1,0 +1,21 @@
+class {class_name} {{
+    {method}
+
+    public static void main(String[] args) {{
+        if (args.length == {n_features}) {{
+
+            // Features:
+            double[] features = new double[args.length];
+            for (int i = 0, l = args.length; i < l; i++) {{
+                features[i] = Double.parseDouble(args[i]);
+            }}
+
+            // Prediction:
+            float[] prediction = {class_name}.{method_name}(features);
+            for (int i=0;i < prediction.length; i++) {{
+                System.out.print(prediction[i] + " ");
+            }}
+            System.out.println();
+        }}
+    }}
+}}

@@ -1,0 +1,17 @@
+public static float[] {method_name}_{method_id}(double[] features) {{
+    int[] classes = new int[{n_classes}];
+    float[] predictions = new float[{n_classes}];
+    {tree_branches}
+
+    float sum = 0.0f;
+    int i;
+
+    for (i = 0; i < {n_classes}; i++) {{
+		sum += (float)classes[i];
+		predictions[i] = (float)classes[i];
+	}}
+	for (i = 0; i < {n_classes}; i++) {{
+        predictions[i] /= sum;
+    }}
+	return predictions;
+}}
