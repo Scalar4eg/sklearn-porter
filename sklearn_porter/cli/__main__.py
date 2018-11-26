@@ -25,7 +25,7 @@ to C, Java, JavaScript and others.
 
 Usage:
   porter --input INPUT [--output OUTPUT]
-         [--class_name CLASS_NAME] [--method_name METHOD_NAME]
+         [--class_name CLASS_NAME] [--method_name METHOD_NAME] [--target_method TARGET_METHOD]
          [--export] [--checksum] [--data] [--pipe]
          [--c] [--java] [--js] [--go] [--php] [--ruby]
          [--help] [--version]'''.format(Porter.__version__)
@@ -61,6 +61,10 @@ def parse_args(args):
                           default='predict',
                           required=False,
                           help='Define the method name in the final output.')
+    optional.add_argument('--target_method',
+                          default='predict',
+                          required=False,
+                          help='Define the method of the classifier used to predict (predict/predict_proba).')
     optional.add_argument('--export', '-e',
                           required=False,
                           default=False,
@@ -142,9 +146,10 @@ def main():
     try:
         class_name = args.get('class_name')
         method_name = args.get('method_name')
+        target_method = args.get('target_method')
         with_export = bool(args.get('export'))
         with_checksum = bool(args.get('checksum'))
-        porter = Porter(estimator, language=language)
+        porter = Porter(estimator, language=language, method=target_method)
         output = porter.export(class_name=class_name, method_name=method_name,
                                export_dir=dest_dir, export_data=with_export,
                                export_append_checksum=with_checksum,
