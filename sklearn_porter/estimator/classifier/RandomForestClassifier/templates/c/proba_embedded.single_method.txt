@@ -1,0 +1,19 @@
+float* {method_name}_{method_id}(float features[]) {{
+    int classes[{n_classes}];
+    float *predictions = (float*)malloc({n_classes} * sizeof(float));
+    {tree_branches}
+
+    float sum = 0.0;
+
+    int i;
+    for (i = 0; i < {n_classes}; i++) {{
+        sum += (float)classes[i];
+        predictions[i] = (float)classes[i];
+    }}
+
+    for (i = 0; i < {n_classes}; i++) {{
+        predictions[i] /= sum;
+    }}
+
+    return predictions;
+}}
