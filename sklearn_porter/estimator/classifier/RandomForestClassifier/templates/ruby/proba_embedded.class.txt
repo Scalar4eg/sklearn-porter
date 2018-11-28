@@ -1,0 +1,11 @@
+class {class_name}
+
+    {method}
+
+end
+
+if ARGV.length == {n_features}
+    features = ARGV.collect {{ |i| i.to_f }}
+	predictions = {class_name}.{method_name}(features)
+	puts predictions.join(" ")
+end

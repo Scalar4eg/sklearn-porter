@@ -1,0 +1,10 @@
+{methods}
+def self.{method_name} (features)
+    classes = []
+    result = []
+    n_estimators = {n_estimators}
+    {method_calls}
+
+	sums = classes.transpose.map {{|x| x.reduce(:+)}}
+	return sums.map {{ |n| n.to_f / n_estimators }}
+end

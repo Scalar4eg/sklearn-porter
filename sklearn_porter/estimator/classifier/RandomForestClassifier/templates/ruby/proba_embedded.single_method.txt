@@ -1,0 +1,8 @@
+def self.{method_name}_{method_id} (features)
+    classes = []
+
+    {tree_branches}
+
+	sum = classes.reduce(:+)
+	return classes.map {{ |n| n.to_f / sum }}
+end
