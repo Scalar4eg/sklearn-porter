@@ -1,0 +1,17 @@
+public static function {method_name}_{method_id}($features) {{
+    $n_classes = {n_classes};
+    $classes = [];
+    $predictions = [];
+
+    {tree_branches}
+
+    $sum = 0;
+    for ($i = 0; $i < $n_classes; $i++) {{
+        $sum += $classes[$i];
+        $predictions[$i] = $classes[$i];
+    }}
+    for ($i = 0; $i < $n_classes; $i++) {{
+        $predictions[$i] /= $sum;
+    }}
+    return $predictions;
+}}
