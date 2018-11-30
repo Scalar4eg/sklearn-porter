@@ -9,7 +9,7 @@ dependencies:
 - libedit=3.1.20170329=hb402a30_2
 - libffi=3.2.1=h475c297_4
 - ncurses=6.1=h0a44026_0
-- openssl=1.1.1=h1de35cc_0
+- openssl=1.1.1
 - pip=10.0.1=py27_0
 - python=2.7.15=h8f8e585_2
 - readline=7.0=h1de35cc_5
@@ -22,5 +22,5 @@ dependencies:
   - protobuf==3.6.1
   - pycairo==1.17.1
   - six==1.11.0
-  - tbb==0.1
+  - tbb==2019.0
 prefix: /opt/miniconda/envs/sklearn-porter
